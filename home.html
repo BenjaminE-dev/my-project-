@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SHOPLYFT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3b82f6',
+            secondary: '#64748b'
+          },
+          borderRadius: {
+            'none': '0px',
+            'sm': '4px',
+            DEFAULT: '8px',
+            'md': '12px',
+            'lg': '16px',
+            'xl': '20px',
+            '2xl': '24px',
+            '3xl': '32px',
+            'full': '9999px',
+            'button': '8px'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :where([class^="ri-"])::before {
+      content: "\f3c2";
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .container{
+      width: 90%;
+            margin-left: 5rem;
+            margin-top: 1rem;
+            background-color: transparent;
+            background: linear-gradient(
+      45deg,
+      rgba(78, 226, 157, 0.76),
+      rgba(201, 113, 219, 0.6) 100%
+    );
+    }
+
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+    }
+
+    .toast {
+      transform: translateX(150%);
+      transition: transform 0.3s ease;
+    }
+
+    .toast.show {
+      transform: translateX(0);
+    }
+
+    .hero-slider {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .search-input:focus {
+      outline: none;
+    }
+
+    .product-card:hover .quick-add {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .quick-add {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+    }
+
+    .custom-checkbox {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .custom-checkbox input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 20px;
+      width: 20px;
+      background-color: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+    }
+
+    .custom-checkbox input:checked~.checkmark {
+      background-color: #3b82f6;
+      border-color: #3b82f6;
+    }
+
+    .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+
+    .custom-checkbox input:checked~.checkmark:after {
+      display: block;
+    }
+
+    .custom-checkbox .checkmark:after {
+      left: 7px;
+      top: 3px;
+      width: 6px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+
+    .custom-range {
+      /* -webkit-appearance: none; */
+      width: 100%;
+      height: 4px;
+      background: #e5e7eb;
+      border-radius: 5px;
+      outline: none;
+    }
+
+    .custom-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      background: #3b82f6;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .custom-range::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      background: #3b82f6;
+      border-radius: 50%;
+      cursor: pointer;
+      border: none;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #e5e7eb;
+      transition: .4s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked+.slider {
+      background-color: #3b82f6;
+    }
+
+    input:checked+.slider:before {
+      transform: translateX(20px);
+    }
+
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 99;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    @media (max-width: 768px) {
+      .desktop-menu {
+        display: none;
+      }
+
+      .mobile-menu {
+        display: block;
+      }
+    }
+
+    @media (min-width: 769px) {
+      .desktop-menu {
+        display: flex;
+      }
+
+      .mobile-menu {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-white">
+  <!-- Header -->
+  <header class="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
+    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="#" class="font-['Pacifico'] text-xl text-primary">SHOPLYFT</a>
+      <!-- Desktop Navigation -->
+      <nav class="desktop-menu hidden md:flex items-center space-x-8">
+        <a href="#" class="text-gray-900 hover:text-primary font-medium transition-colors">Home</a>
+        <a href="#" class="text-gray-900 hover:text-primary font-medium transition-colors">Shop</a>
+        <a href="#" class="text-gray-900 hover:text-primary font-medium transition-colors">Collections</a>
+        <a href="#" class="text-gray-900 hover:text-primary font-medium transition-colors">About</a>
+        <a href="#" class="text-gray-900 hover:text-primary font-medium transition-colors">Contact</a>
+        <a href="./loginpage.html" class="text-gray-900 hover:text-primary font-medium transition-colors py-2">Login</a>
+      </nav>
+      <!-- Search, Account, Cart -->
+      <div class="flex items-center space-x-6">
+        <!-- Search -->
+        <div class="relative hidden md:block">
+          <div class="flex items-center border border-gray-200 rounded-full px-4 py-2 w-64">
+            <input type="text" placeholder="Search products..."
+              class="search-input bg-transparent w-full text-sm border-none">
+            <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+              <i class="ri-search-line"></i>
+            </button>
+          </div>
+        </div>
+        <!-- Mobile Search Button -->
+        <button class="md:hidden w-10 h-10 flex items-center justify-center text-gray-700 hover:text-primary">
+          <i class="ri-search-line ri-xl"></i>
+        </button>
+        <!-- Account -->
+        <button class="w-10 h-10 flex items-center justify-center text-gray-700 hover:text-primary relative">
+          <i class="ri-user-line ri-xl"></i>
+        </button>
+        <!-- Wishlist -->
+        <button class="w-10 h-10 flex items-center justify-center text-gray-700 hover:text-primary relative">
+          <i class="ri-heart-line ri-xl"></i>
+          <span
+            class="absolute -top-1 -right-1 bg-primary text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">3</span>
+        </button>
+        <!-- Cart -->
+        <button class="w-10 h-10 flex items-center justify-center text-gray-700 hover:text-primary relative">
+          <i class="ri-shopping-bag-line ri-xl"></i>
+          <span
+            class="absolute -top-1 -right-1 bg-primary text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">2</span>
+        </button>
+        <!-- Mobile Menu Button -->
+        <button class="md:hidden w-10 h-10 flex items-center justify-center text-gray-700 hover:text-primary"
+          id="mobile-menu-button">
+          <i class="ri-menu-line ri-xl"></i>
+        </button>
+      </div>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden bg-white border-t border-gray-100 py-4 px-4">
+      <div class="flex items-center border border-gray-200 rounded-full px-4 py-2 mb-4">
+        <input type="text" placeholder="Search products..."
+          class="search-input bg-transparent w-full text-sm border-none">
+        <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+          <i class="ri-search-line"></i>
+        </button>
+      </div>
+      <nav class="flex flex-col space-y-4">
+        <a href="#" class="text-gray-900 hover:text-primary font-medium transition-colors py-2">Home</a>
+        <a href="#" class="text-gray-900 hover:text-primary font-medium transition-colors py-2">Shop</a>
+        <a href="#" class="text-gray-900 hover:text-primary font-medium transition-colors py-2">Collections</a>
+        <a href="#" class="text-gray-900 hover:text-primary font-medium transition-colors py-2">About</a>
+        <a href="#" class="text-gray-900 hover:text-primary font-medium transition-colors py-2">Contact</a>
+      </nav>
+    </div>
+  </header>
+  <main class="pt-20">
+    <!-- Hero Section -->
+    <section class="hero-slider relative h-[600px] md:h-[650px] overflow-hidden"
+      style="background-image: url('https://readdy.ai/api/search-image?query=Minimalist%20luxury%20home%20interior%20with%20elegant%20furniture%2C%20soft%20natural%20lighting%2C%20neutral%20color%20palette%2C%20spacious%20layout%20with%20clean%20lines%2C%20high-end%20materials%2C%20tasteful%20decor%20items%2C%20large%20windows%20with%20subtle%20curtains%2C%20wooden%20flooring%2C%20and%20carefully%20curated%20design%20elements%20creating%20a%20sophisticated%20atmosphere&width=1920&height=1080&seq=1&orientation=landscape'); background-size: cover; background-position: center;">
+      <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+      <div class="container mx-auto px-4 h-full flex items-center relative z-10">
+        <div class="max-w-2xl">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">Elevate Your Living Space</h1>
+          <p class="text-xl text-white mb-8">Discover our curated collection of premium furniture and home accessories
+            designed to transform your space.</p>
+          <div class="flex flex-wrap gap-4">
+            <a href="./loginpage.html"
+              class="bg-white text-gray-900 hover:bg-gray-100 px-8 py-3 rounded-button font-medium transition-colors whitespace-nowrap">Shop
+              Now</a>
+            <a href="#"
+              class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-gray-900 px-8 py-3 rounded-button font-medium transition-colors whitespace-nowrap">View
+              Collections</a>
+          </div>
+        </div>
+      </div>
+      <!-- Slider Indicators -->
+      <div class="absolute bottom-8 left-0 right-0 flex justify-center gap-2">
+        <button class="w-3 h-3 rounded-full bg-white bg-opacity-100"></button>
+        <button class="w-3 h-3 rounded-full bg-white bg-opacity-50"></button>
+        <button class="w-3 h-3 rounded-full bg-white bg-opacity-50"></button>
+      </div>
+    </section>
+    <!-- Categories Section -->
+    <section class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">Shop by Category</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+          <a href="#" class="group">
+            <div class="rounded-lg overflow-hidden mb-4 aspect-square bg-gray-200 relative">
+              <img
+                src="https://readdy.ai/api/search-image?query=Minimalist%20modern%20living%20room%20with%20sleek%20furniture%2C%20neutral%20color%20palette%2C%20clean%20lines%2C%20uncluttered%20space%2C%20large%20windows%2C%20natural%20light%2C%20wooden%20accents%2C%20contemporary%20design%20elements%2C%20simple%20decor%2C%20and%20elegant%20simplicity&width=600&height=600&seq=2&orientation=squarish"
+                alt="Living Room"
+                class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
+              <div
+                class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-30 transition-all duration-300">
+              </div>
+            </div>
+            <h3 class="text-lg font-medium text-center">Living Room</h3>
+          </a>
+          <a href="#" class="group">
+            <div class="rounded-lg overflow-hidden mb-4 aspect-square bg-gray-200 relative">
+              <img
+                src="https://readdy.ai/api/search-image?query=Luxury%20minimalist%20fashion%20clothing%20rack%20with%20designer%20outfits%2C%20neutral%20colors%2C%20clean%20aesthetic%2C%20high-end%20fashion%20pieces%2C%20elegant%20display%2C%20contemporary%20style%2C%20premium%20materials%2C%20sophisticated%20arrangement%20against%20white%20background&width=600&height=600&seq=25&orientation=squarish"
+                alt="Fashion"
+                class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
+              <div
+                class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-30 transition-all duration-300">
+              </div>
+            </div>
+            <h3 class="text-lg font-medium text-center">Fashion</h3>
+          </a>
+          <a href="#" class="group">
+            <div class="rounded-lg overflow-hidden mb-4 aspect-square bg-gray-200 relative">
+              <img
+                src="https://readdy.ai/api/search-image?query=Modern%20tech%20gadgets%20collection%20including%20premium%20smartwatch%2C%20wireless%20earbuds%2C%20and%20smartphone%2C%20minimalist%20design%2C%20sleek%20appearance%2C%20high-end%20devices%2C%20clean%20arrangement%2C%20contemporary%20styling%20against%20white%20background&width=600&height=600&seq=26&orientation=squarish"
+                alt="Gadgets"
+                class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
+              <div
+                class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-30 transition-all duration-300">
+              </div>
+            </div>
+            <h3 class="text-lg font-medium text-center">Gadgets</h3>
+          </a>
+          <a href="#" class="group">
+            <div class="rounded-lg overflow-hidden mb-4 aspect-square bg-gray-200 relative">
+              <img
+                src="https://readdy.ai/api/search-image?query=Contemporary%20kitchen%20with%20sleek%20cabinetry%2C%20minimalist%20design%2C%20marble%20countertops%2C%20high-end%20appliances%2C%20clean%20lines%2C%20neutral%20color%20scheme%2C%20modern%20fixtures%2C%20uncluttered%20space%2C%20functional%20layout%2C%20and%20elegant%20simplicity&width=600&height=600&seq=4&orientation=squarish"
+                alt="Kitchen"
+                class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
+              <div
+                class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-30 transition-all duration-300">
+              </div>
+            </div>
+            <h3 class="text-lg font-medium text-center">Kitchen</h3>
+          </a>
+          <a href="#" class="group">
+            <div class="rounded-lg overflow-hidden mb-4 aspect-square bg-gray-200 relative">
+              <img
+                src="https://readdy.ai/api/search-image?query=Modern%20home%20office%20with%20minimalist%20desk%2C%20ergonomic%20chair%2C%20clean%20workspace%2C%20organized%20storage%20solutions%2C%20natural%20lighting%2C%20simple%20decor%2C%20technology%20integration%2C%20neutral%20color%20palette%2C%20uncluttered%20environment%2C%20and%20functional%20design&width=600&height=600&seq=5&orientation=squarish"
+                alt="Office"
+                class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
+              <div
+                class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-30 transition-all duration-300">
+              </div>
+            </div>
+            <h3 class="text-lg font-medium text-center">Office</h3>
+          </a>
+          <a href="#" class="group">
+            <div class="rounded-lg overflow-hidden mb-4 aspect-square bg-gray-200 relative">
+              <img
+                src="https://readdy.ai/api/search-image?query=Luxury%20accessories%20collection%20with%20designer%20watches%2C%20leather%20goods%2C%20and%20premium%20accessories%2C%20elegant%20display%2C%20minimalist%20arrangement%2C%20high-end%20products%2C%20sophisticated%20presentation%20against%20white%20background&width=600&height=600&seq=27&orientation=squarish"
+                alt="Accessories"
+                class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
+              <div
+                class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-30 transition-all duration-300">
+              </div>
+            </div>
+            <h3 class="text-lg font-medium text-center">Accessories</h3>
+          </a>
+        </div>
+      </div>
+    </section>
+    <!-- Featured Products Section -->
+    <section class="py-16">
+      <div class="container1 mx-auto px-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-10">
+          <h2 class="text-3xl font-bold">Featured Products</h2>
+          <div class="flex items-center mt-4 md:mt-0">
+            <div class="relative mr-4">
+              <button id="sort-button"
+                class="flex items-center space-x-2 border border-gray-200 rounded-button px-4 py-2 text-sm whitespace-nowrap">
+                <span>Sort by: <span class="font-medium">Newest</span></span>
+                <i class="ri-arrow-down-s-line"></i>
+              </button>
+              <div id="sort-dropdown"
+                class="hidden absolute right-0 top-full mt-2 bg-white shadow-lg rounded-lg py-2 w-48 z-20">
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 text-primary">Newest</a>
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Price: Low to High</a>
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Price: High to Low</a>
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Most Popular</a>
+              </div>
+            </div>
+            <button id="filter-button"
+              class="flex items-center space-x-2 border border-gray-200 rounded-button px-4 py-2 text-sm whitespace-nowrap">
+              <i class="ri-filter-3-line"></i>
+              <span>Filter</span>
+            </button>
+          </div>
+        </div>
+        <!-- Filter Panel -->
+        <div id="filter-panel" class="hidden bg-white border border-gray-200 rounded-lg p-6 mb-8">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <!-- Price Range -->
+            <div>
+              <h3 class="font-medium mb-4">Price Range</h3>
+              <div class="mb-4">
+                <input type="range" min="0" max="2000" value="1000" class="custom-range" id="price-range">
+                <div class="flex justify-between mt-2 text-sm text-gray-500">
+                  <span>$0</span>
+                  <span id="price-value">$1000</span>
+                  <span>$2000+</span>
+                </div>
+              </div>
+            </div>
+            <!-- Categories -->
+            <div>
+              <h3 class="font-medium mb-4">Categories</h3>
+              <div class="space-y-2">
+                <label class="custom-checkbox flex items-center text-sm">
+                  <input type="checkbox" checked>
+                  <span class="checkmark"></span>
+                  <span class="ml-7">All Categories</span>
+                </label>
+                <label class="custom-checkbox flex items-center text-sm">
+                  <input type="checkbox">
+                  <span class="checkmark"></span>
+                  <span class="ml-7">Living Room</span>
+                </label>
+                <label class="custom-checkbox flex items-center text-sm">
+                  <input type="checkbox">
+                  <span class="checkmark"></span>
+                  <span class="ml-7">Bedroom</span>
+                </label>
+                <label class="custom-checkbox flex items-center text-sm">
+                  <input type="checkbox">
+                  <span class="checkmark"></span>
+                  <span class="ml-7">Kitchen</span>
+                </label>
+                <label class="custom-checkbox flex items-center text-sm">
+                  <input type="checkbox">
+                  <span class="checkmark"></span>
+                  <span class="ml-7">Office</span>
+                </label>
+              </div>
+            </div>
+            <!-- Colors -->
+            <div>
+              <h3 class="font-medium mb-4">Colors</h3>
+              <div class="flex flex-wrap gap-3">
+                <button class="w-8 h-8 rounded-full bg-black border-2 border-gray-300"></button>
+                <button class="w-8 h-8 rounded-full bg-white border-2 border-gray-300"></button>
+                <button class="w-8 h-8 rounded-full bg-gray-500 border-2 border-gray-300"></button>
+                <button class="w-8 h-8 rounded-full bg-blue-500 border-2 border-gray-300"></button>
+                <button class="w-8 h-8 rounded-full bg-green-500 border-2 border-gray-300"></button>
+                <button class="w-8 h-8 rounded-full bg-yellow-500 border-2 border-gray-300"></button>
+                <button class="w-8 h-8 rounded-full bg-red-500 border-2 border-gray-300"></button>
+                <button class="w-8 h-8 rounded-full bg-purple-500 border-2 border-gray-300"></button>
+              </div>
+            </div>
+            <!-- Other Filters -->
+            <div>
+              <h3 class="font-medium mb-4">Other Filters</h3>
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-sm">On Sale</span>
+                  <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-sm">In Stock</span>
+                  <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-sm">Free Shipping</span>
+                  <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-end mt-6 space-x-4">
+            <button class="text-gray-500 hover:text-gray-700 text-sm font-medium whitespace-nowrap">Clear All</button>
+            <button
+              class="bg-primary text-white px-6 py-2 rounded-button text-sm font-medium hover:bg-blue-600 transition-colors whitespace-nowrap">Apply
+              Filters</button>
+          </div>
+        </div>
+        <!-- Products Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <!-- Product 1 -->
+          <div class="product-card group">
+            <div class="relative mb-4 rounded-lg overflow-hidden">
+              <span class="absolute top-3 left-3 bg-primary text-white text-xs px-2 py-1 rounded-full z-10">New</span>
+              <img
+                src="https://readdy.ai/api/search-image?query=Premium%20smartwatch%20with%20minimalist%20design%2C%20sleek%20metal%20case%2C%20high-resolution%20display%2C%20modern%20features%2C%20elegant%20appearance%2C%20sophisticated%20technology%2C%20clean%20aesthetic%20against%20white%20background&width=600&height=600&seq=28&orientation=squarish"
+                alt="Smart Watch" class="w-full aspect-square object-cover object-top">
+              <button
+                class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-white rounded-full text-gray-400 hover:text-primary transition-colors z-10">
+                <i class="ri-heart-line"></i>
+              </button>
+              <div class="quick-add absolute bottom-0 left-0 right-0 bg-white bg-opacity-95 py-4 px-4">
+                <button
+                  class="w-full bg-primary text-white py-2 rounded-button hover:bg-blue-600 transition-colors whitespace-nowrap">Add
+                  to Cart</button>
+              </div>
+            </div>
+            <h3 class="font-medium mb-1">Premium Smart Watch</h3>
+            <div class="flex items-center mb-1">
+              <div class="flex text-yellow-400">
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-half-fill"></i>
+              </div>
+              <span class="text-xs text-gray-500 ml-1">(128)</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="font-medium">$299.00</span>
+            </div>
+          </div>
+          <!-- Product 2 -->
+          <div class="product-card group">
+            <div class="relative mb-4 rounded-lg overflow-hidden">
+              <span class="absolute top-3 left-3 bg-red-500 text-white text-xs px-2 py-1 rounded-full z-10">-20%</span>
+              <img
+                src="https://readdy.ai/api/search-image?query=Designer%20leather%20jacket%20in%20minimalist%20style%2C%20premium%20quality%2C%20clean%20cut%2C%20modern%20fashion%2C%20sophisticated%20appearance%2C%20luxury%20material%2C%20contemporary%20design%20against%20white%20background&width=600&height=600&seq=29&orientation=squarish"
+                alt="Leather Jacket" class="w-full aspect-square object-cover object-top">
+              <button
+                class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-white rounded-full text-gray-400 hover:text-primary transition-colors z-10">
+                <i class="ri-heart-line"></i>
+              </button>
+              <div class="quick-add absolute bottom-0 left-0 right-0 bg-white bg-opacity-95 py-4 px-4">
+                <button
+                  class="w-full bg-primary text-white py-2 rounded-button hover:bg-blue-600 transition-colors whitespace-nowrap">Add
+                  to Cart</button>
+              </div>
+            </div>
+            <h3 class="font-medium mb-1">Premium Leather Jacket</h3>
+            <div class="flex items-center mb-1">
+              <div class="flex text-yellow-400">
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+              </div>
+              <span class="text-xs text-gray-500 ml-1">(95)</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="font-medium">$399.00</span>
+                <span class="text-gray-400 line-through text-sm ml-2">$499.00</span>
+              </div>
+            </div>
+          </div>
+          <!-- Product 3 -->
+          <div class="product-card group">
+            <div class="relative mb-4 rounded-lg overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=Premium%20wireless%20earbuds%20with%20charging%20case%2C%20minimalist%20design%2C%20high-tech%20appearance%2C%20modern%20audio%20device%2C%20sleek%20form%20factor%2C%20sophisticated%20technology%20product%20against%20white%20background&width=600&height=600&seq=30&orientation=squarish"
+                alt="Wireless Earbuds" class="w-full aspect-square object-cover object-top">
+              <button
+                class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-white rounded-full text-gray-400 hover:text-primary transition-colors z-10">
+                <i class="ri-heart-line"></i>
+              </button>
+              <div class="quick-add absolute bottom-0 left-0 right-0 bg-white bg-opacity-95 py-4 px-4">
+                <button
+                  class="w-full bg-primary text-white py-2 rounded-button hover:bg-blue-600 transition-colors whitespace-nowrap">Add
+                  to Cart</button>
+              </div>
+            </div>
+            <h3 class="font-medium mb-1">Wireless Pro Earbuds</h3>
+            <div class="flex items-center mb-1">
+              <div class="flex text-yellow-400">
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-half-fill"></i>
+              </div>
+              <span class="text-xs text-gray-500 ml-1">(156)</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="font-medium">$199.00</span>
+            </div>
+          </div>
+          <!-- Product 4 -->
+          <div class="product-card group">
+            <div class="relative mb-4 rounded-lg overflow-hidden">
+              <span
+                class="absolute top-3 left-3 bg-green-500 text-white text-xs px-2 py-1 rounded-full z-10">Bestseller</span>
+              <img
+                src="https://readdy.ai/api/search-image?query=Premium%20designer%20sunglasses%20with%20minimalist%20frame%20design%2C%20luxury%20eyewear%2C%20modern%20style%2C%20sophisticated%20appearance%2C%20high-end%20fashion%20accessory%20against%20white%20background&width=600&height=600&seq=31&orientation=squarish"
+                alt="Designer Sunglasses" class="w-full aspect-square object-cover object-top">
+              <button
+                class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-white rounded-full text-red-500 transition-colors z-10">
+                <i class="ri-heart-fill"></i>
+              </button>
+              <div class="quick-add absolute bottom-0 left-0 right-0 bg-white bg-opacity-95 py-4 px-4">
+                <button
+                  class="w-full bg-primary text-white py-2 rounded-button hover:bg-blue-600 transition-colors whitespace-nowrap">Add
+                  to Cart</button>
+              </div>
+            </div>
+            <h3 class="font-medium mb-1">Designer Sunglasses</h3>
+            <div class="flex items-center mb-1">
+              <div class="flex text-yellow-400">
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+              </div>
+              <span class="text-xs text-gray-500 ml-1">(218)</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="font-medium">$249.00</span>
+            </div>
+          </div>
+          <!-- Product 5 -->
+          <div class="product-card group">
+            <div class="relative mb-4 rounded-lg overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=Minimalist%20dining%20chair%20with%20sleek%20design%2C%20natural%20wood%20legs%2C%20light%20gray%20upholstered%20seat%2C%20clean%20lines%2C%20contemporary%20style%2C%20ergonomic%20shape%2C%20modern%20dining%20furniture%2C%20simple%20form%2C%20elegant%20proportions%2C%20and%20sophisticated%20simplicity%20against%20plain%20white%20background&width=600&height=600&seq=10&orientation=squarish"
+                alt="Dining Chair" class="w-full aspect-square object-cover object-top">
+              <button
+                class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-white rounded-full text-gray-400 hover:text-primary transition-colors z-10">
+                <i class="ri-heart-line"></i>
+              </button>
+              <div class="quick-add absolute bottom-0 left-0 right-0 bg-white bg-opacity-95 py-4 px-4">
+                <button
+                  class="w-full bg-primary text-white py-2 rounded-button hover:bg-blue-600 transition-colors whitespace-nowrap">Add
+                  to Cart</button>
+              </div>
+            </div>
+            <h3 class="font-medium mb-1">Modern Dining Chair</h3>
+            <div class="flex items-center mb-1">
+              <div class="flex text-yellow-400">
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-line"></i>
+              </div>
+              <span class="text-xs text-gray-500 ml-1">(56)</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="font-medium">$149.00</span>
+            </div>
+          </div>
+          <!-- Product 6 -->
+          <div class="product-card group">
+            <div class="relative mb-4 rounded-lg overflow-hidden">
+              <span
+                class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-2 py-1 rounded-full z-10">Limited</span>
+              <img
+                src="https://readdy.ai/api/search-image?query=Minimalist%20floor%20lamp%20with%20sleek%20design%2C%20metal%20frame%2C%20adjustable%20arm%2C%20matte%20black%20finish%2C%20contemporary%20style%2C%20clean%20lines%2C%20modern%20lighting%20fixture%2C%20functional%20design%2C%20elegant%20silhouette%2C%20and%20sophisticated%20simplicity%20against%20plain%20white%20background&width=600&height=600&seq=11&orientation=squarish"
+                alt="Floor Lamp" class="w-full aspect-square object-cover object-top">
+              <button
+                class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-white rounded-full text-gray-400 hover:text-primary transition-colors z-10">
+                <i class="ri-heart-line"></i>
+              </button>
+              <div class="quick-add absolute bottom-0 left-0 right-0 bg-white bg-opacity-95 py-4 px-4">
+                <button
+                  class="w-full bg-primary text-white py-2 rounded-button hover:bg-blue-600 transition-colors whitespace-nowrap">Add
+                  to Cart</button>
+              </div>
+            </div>
+            <h3 class="font-medium mb-1">Adjustable Floor Lamp</h3>
+            <div class="flex items-center mb-1">
+              <div class="flex text-yellow-400">
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+              </div>
+              <span class="text-xs text-gray-500 ml-1">(89)</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="font-medium">$179.00</span>
+            </div>
+          </div>
+          <!-- Product 7 -->
+          <div class="product-card group">
+            <div class="relative mb-4 rounded-lg overflow-hidden">
+              <span class="absolute top-3 left-3 bg-red-500 text-white text-xs px-2 py-1 rounded-full z-10">-20%</span>
+              <img
+                src="https://readdy.ai/api/search-image?query=Minimalist%20side%20table%20with%20clean%20lines%2C%20marble%20top%2C%20metal%20base%2C%20contemporary%20design%2C%20simple%20geometric%20form%2C%20elegant%20proportions%2C%20modern%20accent%20piece%2C%20functional%20surface%2C%20sophisticated%20appearance%2C%20and%20refined%20simplicity%20against%20plain%20white%20background&width=600&height=600&seq=12&orientation=squarish"
+                alt="Side Table" class="w-full aspect-square object-cover object-top">
+              <button
+                class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-white rounded-full text-gray-400 hover:text-primary transition-colors z-10">
+                <i class="ri-heart-line"></i>
+              </button>
+              <div class="quick-add absolute bottom-0 left-0 right-0 bg-white bg-opacity-95 py-4 px-4">
+                <a href="./shoppingcart.html">
+                  <button
+                    class="w-full bg-primary text-white py-2 rounded-button hover:bg-blue-600 transition-colors whitespace-nowrap">Add
+                    to Cart</button>
+                  </ar>
+              </div>
+            </div>
+            <h3 class="font-medium mb-1">Marble Side Table</h3>
+            <div class="flex items-center mb-1">
+              <div class="flex text-yellow-400">
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-half-fill"></i>
+                <i class="ri-star-line"></i>
+              </div>
+              <span class="text-xs text-gray-500 ml-1">(42)</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="font-medium">$159.00</span>
+                <span class="text-gray-400 line-through text-sm ml-2">$199.00</span>
+              </div>
+            </div>
+          </div>
+          <!-- Product 8 -->
+          <div class="product-card group">
+            <div class="relative mb-4 rounded-lg overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=Minimalist%20decorative%20vase%20with%20clean%20lines%2C%20ceramic%20material%2C%20matte%20white%20finish%2C%20contemporary%20design%2C%20simple%20geometric%20form%2C%20elegant%20proportions%2C%20modern%20home%20decor%20piece%2C%20understated%20elegance%2C%20sophisticated%20appearance%2C%20and%20refined%20simplicity%20against%20plain%20white%20background&width=600&height=600&seq=13&orientation=squarish"
+                alt="Decorative Vase" class="w-full aspect-square object-cover object-top">
+              <button
+                class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-white rounded-full text-gray-400 hover:text-primary transition-colors z-10">
+                <i class="ri-heart-line"></i>
+              </button>
+              <div class="quick-add absolute bottom-0 left-0 right-0 bg-white bg-opacity-95 py-4 px-4">
+                <button
+                  class="w-full bg-primary text-white py-2 rounded-button hover:bg-blue-600 transition-colors whitespace-nowrap">Add
+                  to Cart</button>
+              </div>
+            </div>
+            <h3 class="font-medium mb-1">Ceramic Decorative Vase</h3>
+            <div class="flex items-center mb-1">
+              <div class="flex text-yellow-400">
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-line"></i>
+              </div>
+              <span class="text-xs text-gray-500 ml-1">(29)</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="font-medium">$59.00</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex justify-center mt-12">
+          <a href="#"
+            class="border border-gray-300 text-gray-700 hover:bg-gray-50 px-8 py-3 rounded-button font-medium transition-colors whitespace-nowrap">View
+            All Products</a>
+        </div>
+      </div>
+    </section>
+    <!-- Features Section -->
+    <section class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div class="flex flex-col items-center text-center">
+            <div class="w-16 h-16 flex items-center justify-center text-primary mb-4">
+              <i class="ri-truck-line ri-2x"></i>
+            </div>
+            <h3 class="text-lg font-medium mb-2">Free Shipping</h3>
+            <p class="text-gray-600">Free shipping on all orders over $50. International shipping available.</p>
+          </div>
+          <div class="flex flex-col items-center text-center">
+            <div class="w-16 h-16 flex items-center justify-center text-primary mb-4">
+              <i class="ri-refresh-line ri-2x"></i>
+            </div>
+            <h3 class="text-lg font-medium mb-2">Easy Returns</h3>
+            <p class="text-gray-600">30-day return policy. Free returns on all orders. No questions asked.</p>
+          </div>
+          <div class="flex flex-col items-center text-center">
+            <div class="w-16 h-16 flex items-center justify-center text-primary mb-4">
+              <i class="ri-secure-payment-line ri-2x"></i>
+            </div>
+            <h3 class="text-lg font-medium mb-2">Secure Payments</h3>
+            <p class="text-gray-600">All payments are processed securely. Multiple payment options available.</p>
+          </div>
+          <div class="flex flex-col items-center text-center">
+            <div class="w-16 h-16 flex items-center justify-center text-primary mb-4">
+              <i class="ri-customer-service-2-line ri-2x"></i>
+            </div>
+            <h3 class="text-lg font-medium mb-2">24/7 Support</h3>
+            <p class="text-gray-600">Our customer service team is available 24/7 to assist you with any questions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- New Arrivals Section -->
+    <section class="py-16">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">New Arrivals</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="group relative rounded-lg overflow-hidden">
+            <img
+              src="https://readdy.ai/api/search-image?query=Minimalist%20modern%20sofa%20with%20clean%20lines%2C%20light%20gray%20fabric%20upholstery%2C%20wooden%20legs%2C%20contemporary%20design%2C%20comfortable%20seating%2C%20elegant%20silhouette%2C%20neutral%20color%2C%20simple%20form%2C%20sophisticated%20appearance%2C%20and%20refined%20simplicity%20against%20plain%20white%20background&width=600&height=400&seq=14&orientation=landscape"
+              alt="Modern Sofa"
+              class="w-full h-80 object-cover object-top transition-transform duration-500 group-hover:scale-105">
+            <div class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-30 transition-all duration-300">
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 p-6">
+              <h3 class="text-white text-xl font-medium mb-2">Modern Sofa Collection</h3>
+              <a href="#"
+                class="inline-block text-white border-b border-white pb-1 hover:border-primary hover:text-primary transition-colors">Shop
+                Now</a>
+            </div>
+          </div>
+          <div class="group relative rounded-lg overflow-hidden">
+            <img
+              src="https://readdy.ai/api/search-image?query=Minimalist%20dining%20table%20set%20with%20clean%20lines%2C%20natural%20wood%20finish%2C%20contemporary%20design%2C%20elegant%20proportions%2C%20functional%20dining%20furniture%2C%20simple%20form%2C%20modern%20dining%20room%20centerpiece%2C%20sophisticated%20appearance%2C%20and%20refined%20simplicity%20against%20plain%20white%20background&width=600&height=400&seq=15&orientation=landscape"
+              alt="Dining Set"
+              class="w-full h-80 object-cover object-top transition-transform duration-500 group-hover:scale-105">
+            <div class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-30 transition-all duration-300">
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 p-6">
+              <h3 class="text-white text-xl font-medium mb-2">Dining Room Essentials</h3>
+              <a href="#"
+                class="inline-block text-white border-b border-white pb-1 hover:border-primary hover:text-primary transition-colors">Shop
+                Now</a>
+            </div>
+          </div>
+          <div class="group relative rounded-lg overflow-hidden">
+            <img
+              src="https://readdy.ai/api/search-image?query=Minimalist%20bedroom%20set%20with%20clean%20lines%2C%20natural%20wood%20finish%2C%20contemporary%20design%2C%20elegant%20bed%20frame%2C%20matching%20nightstands%2C%20modern%20bedroom%20furniture%2C%20simple%20form%2C%20sophisticated%20appearance%2C%20and%20refined%20simplicity%20against%20plain%20white%20background&width=600&height=400&seq=16&orientation=landscape"
+              alt="Bedroom Set"
+              class="w-full h-80 object-cover object-top transition-transform duration-500 group-hover:scale-105">
+            <div class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-30 transition-all duration-300">
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 p-6">
+              <h3 class="text-white text-xl font-medium mb-2">Bedroom Collection</h3>
+              <a href="#"
+                class="inline-block text-white border-b border-white pb-1 hover:border-primary hover:text-primary transition-colors">Shop
+                Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Newsletter Section -->
+    <section class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="max-w-3xl mx-auto text-center">
+          <h2 class="text-3xl font-bold mb-4">Subscribe to Our Newsletter</h2>
+          <p class="text-gray-600 mb-8">Stay updated with our latest products, exclusive offers, and interior design
+            tips.</p>
+          <form class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+            <input type="email" placeholder="Your email address"
+              class="flex-grow px-4 py-3 rounded-button border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 transition-colors">
+            <button type="submit"
+              class="bg-primary text-white px-6 py-3 rounded-button font-medium hover:bg-blue-600 transition-colors whitespace-nowrap">Subscribe</button>
+          </form>
+          <p class="text-gray-500 text-sm mt-4">By subscribing, you agree to our Privacy Policy and consent to receive
+            updates from our company.</p>
+        </div>
+      </div>
+    </section>
+    <!-- Instagram Feed Section -->
+    <section class="py-16">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-4">Follow Us on Instagram</h2>
+        <p class="text-gray-600 text-center mb-12">@elegance_home</p>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <a href="#" class="group relative aspect-square overflow-hidden">
+            <img
+              src="https://readdy.ai/api/search-image?query=Elegant%20living%20room%20interior%20with%20minimalist%20furniture%2C%20neutral%20colors%2C%20natural%20light%2C%20clean%20design%2C%20contemporary%20styling%2C%20uncluttered%20space%2C%20sophisticated%20atmosphere%2C%20tasteful%20decor%2C%20and%20harmonious%20composition&width=300&height=300&seq=17&orientation=squarish"
+              alt="Instagram Post"
+              class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-110">
+            <div
+              class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
+              <div
+                class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center">
+                <i class="ri-heart-fill mr-2"></i>
+                <span>142</span>
+              </div>
+            </div>
+          </a>
+          <a href="#" class="group relative aspect-square overflow-hidden">
+            <img
+              src="https://readdy.ai/api/search-image?query=Modern%20kitchen%20interior%20with%20minimalist%20design%2C%20clean%20lines%2C%20high-end%20appliances%2C%20neutral%20color%20palette%2C%20elegant%20fixtures%2C%20uncluttered%20countertops%2C%20contemporary%20styling%2C%20functional%20layout%2C%20and%20sophisticated%20atmosphere&width=300&height=300&seq=18&orientation=squarish"
+              alt="Instagram Post"
+              class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-110">
+            <div
+              class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
+              <div
+                class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center">
+                <i class="ri-heart-fill mr-2"></i>
+                <span>98</span>
+              </div>
+            </div>
+          </a>
+          <a href="#" class="group relative aspect-square overflow-hidden">
+            <img
+              src="https://readdy.ai/api/search-image?query=Stylish%20bedroom%20interior%20with%20minimalist%20furniture%2C%20neutral%20bedding%2C%20clean%20design%2C%20contemporary%20styling%2C%20uncluttered%20space%2C%20natural%20light%2C%20elegant%20nightstands%2C%20sophisticated%20atmosphere%2C%20and%20harmonious%20composition&width=300&height=300&seq=19&orientation=squarish"
+              alt="Instagram Post"
+              class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-110">
+            <div
+              class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
+              <div
+                class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center">
+                <i class="ri-heart-fill mr-2"></i>
+                <span>215</span>
+              </div>
+            </div>
+          </a>
+          <a href="#" class="group relative aspect-square overflow-hidden">
+            <img
+              src="https://readdy.ai/api/search-image?query=Modern%20home%20office%20with%20minimalist%20desk%2C%20ergonomic%20chair%2C%20clean%20workspace%2C%20contemporary%20styling%2C%20uncluttered%20environment%2C%20natural%20light%2C%20elegant%20accessories%2C%20sophisticated%20atmosphere%2C%20and%20harmonious%20composition&width=300&height=300&seq=20&orientation=squarish"
+              alt="Instagram Post"
+              class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-110">
+            <div
+              class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
+              <div
+                class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center">
+                <i class="ri-heart-fill mr-2"></i>
+                <span>167</span>
+              </div>
+            </div>
+          </a>
+          <a href="#" class="group relative aspect-square overflow-hidden">
+            <img
+              src="https://readdy.ai/api/search-image?query=Elegant%20dining%20area%20with%20minimalist%20table%2C%20modern%20chairs%2C%20clean%20design%2C%20contemporary%20styling%2C%20uncluttered%20space%2C%20natural%20light%2C%20sophisticated%20atmosphere%2C%20tasteful%20tableware%2C%20and%20harmonious%20composition&width=300&height=300&seq=21&orientation=squarish"
+              alt="Instagram Post"
+              class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-110">
+            <div
+              class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
+              <div
+                class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center">
+                <i class="ri-heart-fill mr-2"></i>
+                <span>124</span>
+              </div>
+            </div>
+          </a>
+          <a href="#" class="group relative aspect-square overflow-hidden">
+            <img
+              src="https://readdy.ai/api/search-image?query=Modern%20bathroom%20interior%20with%20minimalist%20fixtures%2C%20clean%20design%2C%20contemporary%20styling%2C%20uncluttered%20space%2C%20elegant%20vanity%2C%20sophisticated%20atmosphere%2C%20neutral%20colors%2C%20and%20harmonious%20composition&width=300&height=300&seq=22&orientation=squarish"
+              alt="Instagram Post"
+              class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-110">
+            <div
+              class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
+              <div
+                class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center">
+                <i class="ri-heart-fill mr-2"></i>
+                <span>183</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- Footer -->
+  <!-- Toast Container -->
+  <div class="toast-container"></div>
+  <footer class="bg-gray-900 text-white pt-16 pb-8">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <div>
+          <a href="#" class="font-['Pacifico'] text-2xl text-white mb-6 inline-block">logo</a>
+          <p class="text-gray-400 mb-6">Elegance is a premium home furnishing brand dedicated to bringing minimalist,
+            high-quality furniture and decor to modern homes.</p>
+          <div class="flex space-x-4">
+            <a href="#"
+              class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-primary transition-colors">
+              <i class="ri-facebook-fill"></i>
+            </a>
+            <a href="#"
+              class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-primary transition-colors">
+              <i class="ri-instagram-fill"></i>
+            </a>
+            <a href="#"
+              class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-primary transition-colors">
+              <i class="ri-pinterest-fill"></i>
+            </a>
+            <a href="#"
+              class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-primary transition-colors">
+              <i class="ri-twitter-fill"></i>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-lg font-medium mb-6">Shop</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">All Products</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Living Room</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Bedroom</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Kitchen</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Office</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Lighting</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Decor</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-medium mb-6">Customer Service</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contact Us</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">FAQs</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Shipping & Returns</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Store Policy</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Payment Methods</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Track Your Order</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-medium mb-6">Company</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">About Us</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Our Story</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Careers</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Press</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Sustainability</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Terms & Conditions</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 pt-8">
+        <div class="flex flex-col md:flex-row md:justify-between items-center">
+          <div class="mb-4 md:mb-0">
+            <p class="text-gray-400 text-sm">&copy; 2025 Elegance. All rights reserved.</p>
+          </div>
+          <div class="flex items-center space-x-4">
+            <span class="text-gray-400 text-sm">We Accept:</span>
+            <div class="flex space-x-3">
+              <i class="ri-visa-fill ri-lg"></i>
+              <i class="ri-mastercard-fill ri-lg"></i>
+              <i class="ri-paypal-fill ri-lg"></i>
+              <i class="ri-apple-fill ri-lg"></i>
+              <i class="ri-amazon-fill ri-lg"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- Back to Top Button -->
+  <button id="back-to-top"
+    class="back-to-top w-12 h-12 bg-primary text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-600 transition-colors">
+    <i class="ri-arrow-up-line ri-lg"></i>
+  </button>
+  <!-- Checkout Modal -->
+  <div id="checkout-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+      <div class="p-6 border-b border-gray-200">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xl font-bold">Your Cart</h3>
+          <button id="close-checkout" class="text-gray-400 hover:text-gray-600">
+            <i class="ri-close-line ri-lg"></i>
+          </button>
+        </div>
+      </div>
+      <div class="p-6">
+        <!-- Progress Steps -->
+        <div class="flex items-center justify-between mb-8">
+          <div class="flex flex-col items-center">
+            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mb-2">1</div>
+            <span class="text-sm text-primary font-medium">Cart</span>
+          </div>
+          <div class="flex-1 h-1 bg-gray-200 mx-2">
+            <div class="h-full bg-primary" style="width: 0%"></div>
+          </div>
+          <div class="flex flex-col items-center">
+            <div class="w-8 h-8 bg-gray-200 text-gray-500 rounded-full flex items-center justify-center mb-2">2</div>
+            <a href="./checkoutform.html">
+            <span class="text-sm text-gray-500">Shipping</span>
+          </a>
+          </div>
+          <div class="flex-1 h-1 bg-gray-200 mx-2"></div>
+          <div class="flex flex-col items-center">
+            <div class="w-8 h-8 bg-gray-200 text-gray-500 rounded-full flex items-center justify-center mb-2">3</div>
+            <span class="text-sm text-gray-500">Payment</span>
+          </div>
+          <div class="flex-1 h-1 bg-gray-200 mx-2"></div>
+          <div class="flex flex-col items-center">
+            <div class="w-8 h-8 bg-gray-200 text-gray-500 rounded-full flex items-center justify-center mb-2">4</div>
+            <span class="text-sm text-gray-500">Confirm</span>
+          </div>
+        </div>
+        <!-- Cart Items -->
+        <div class="space-y-4 mb-6">
+          <div class="flex items-center border-b border-gray-100 pb-4">
+            <img
+              src="https://readdy.ai/api/search-image?query=Minimalist%20modern%20armchair%20with%20sleek%20design%2C%20light%20beige%20fabric%20upholstery%2C%20wooden%20legs%2C%20clean%20lines%2C%20comfortable%20seat%20cushion%2C%20elegant%20silhouette%2C%20neutral%20color%2C%20contemporary%20styling%2C%20simple%20form%2C%20and%20sophisticated%20appearance%20against%20plain%20white%20background&width=100&height=100&seq=23&orientation=squarish"
+              alt="Modern Armchair" class="w-20 h-20 object-cover object-top rounded">
+            <div class="ml-4 flex-1">
+              <h4 class="font-medium">Comfort Lounge Chair</h4>
+              <p class="text-gray-500 text-sm">Beige</p>
+            </div>
+            <div class="flex items-center">
+              <button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded">-</button>
+              <span class="mx-3">1</span>
+              <button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded">+</button>
+            </div>
+            <div class="ml-6 w-20 text-right">
+              <span class="font-medium">$249.00</span>
+            </div>
+            <button class="ml-4 text-gray-400 hover:text-red-500">
+              <i class="ri-delete-bin-line"></i>
+            </button>
+          </div>
+          <div class="flex items-center pb-4">
+            <img
+              src="https://readdy.ai/api/search-image?query=Minimalist%20wooden%20coffee%20table%20with%20clean%20lines%2C%20natural%20oak%20finish%2C%20simple%20rectangular%20design%2C%20sturdy%20construction%2C%20contemporary%20style%2C%20uncluttered%20appearance%2C%20smooth%20surface%2C%20mid-century%20modern%20influence%2C%20elegant%20proportions%2C%20and%20sophisticated%20simplicity%20against%20plain%20white%20background&width=100&height=100&seq=24&orientation=squarish"
+              alt="Wooden Coffee Table" class="w-20 h-20 object-cover object-top rounded">
+            <div class="ml-4 flex-1">
+              <h4 class="font-medium">Nordic Coffee Table</h4>
+              <p class="text-gray-500 text-sm">Oak</p>
+            </div>
+            <div class="flex items-center">
+              <button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded">-</button>
+              <span class="mx-3">1</span>
+              <button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded">+</button>
+            </div>
+            <div class="ml-6 w-20 text-right">
+              <span class="font-medium">$189.00</span>
+            </div>
+            <button class="ml-4 text-gray-400 hover:text-red-500">
+              <i class="ri-delete-bin-line"></i>
+            </button>
+          </div>
+        </div>
+        <!-- Order Summary -->
+        <div class="bg-gray-50 p-6 rounded-lg mb-6">
+          <h4 class="font-medium mb-4">Order Summary</h4>
+          <div class="space-y-2 mb-4">
+            <div class="flex justify-between">
+              <span class="text-gray-600">Subtotal</span>
+              <span>$438.00</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-600">Shipping</span>
+              <span>Free</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-600">Tax</span>
+              <span>$35.04</span>
+            </div>
+          </div>
+          <div class="border-t border-gray-200 pt-4 flex justify-between font-medium">
+            <span>Total</span>
+            <span>$473.04</span>
+          </div>
+        </div>
+        <!-- Promo Code -->
+        <div class="flex mb-6">
+          <input type="text" placeholder="Promo code"
+            class="flex-grow px-4 py-3 rounded-l-button border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 transition-colors">
+          <button
+            class="bg-gray-900 text-white px-6 py-3 rounded-r-button font-medium hover:bg-gray-800 transition-colors whitespace-nowrap">Apply</button>
+        </div>
+        <!-- Express Checkout -->
+        <div class="mb-6">
+          <div class="text-center mb-4">
+            <span class="text-sm font-medium">Express Checkout</span>
+          </div>
+          <div class="grid grid-cols-3 gap-4">
+            <button
+              class="bg-[#F7BE38] text-white py-3 rounded-button font-medium hover:bg-opacity-90 transition-colors whitespace-nowrap flex items-center justify-center">
+              <i class="ri-paypal-fill mr-2"></i> PayPal
+            </button>
+            <button
+              class="bg-black text-white py-3 rounded-button font-medium hover:bg-opacity-90 transition-colors whitespace-nowrap flex items-center justify-center">
+              <i class="ri-apple-fill mr-2"></i> Apple Pay
+            </button>
+            <button
+              class="bg-[#5F6368] text-white py-3 rounded-button font-medium hover:bg-opacity-90 transition-colors whitespace-nowrap flex items-center justify-center">
+              <i class="ri-google-fill mr-2"></i> Google Pay
+            </button>
+          </div>
+        </div>
+        <div class="flex justify-between">
+          <button class="text-primary hover:text-blue-700 font-medium flex items-center">
+            <i class="ri-arrow-left-line mr-2"></i>
+            Continue Shopping
+          </button>
+          <a href="./checkoutform.html">
+            <button
+              class="bg-primary text-white px-8 py-3 rounded-button font-medium hover:bg-blue-600 transition-colors whitespace-nowrap">Proceed
+              to Shipping</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script id="mobile-menu-script">
+    document.addEventListener('DOMContentLoaded', function () {
+      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenuButton.addEventListener('click', function () {
+        if (mobileMenu.classList.contains('hidden')) {
+          mobileMenu.classList.remove('hidden');
+          mobileMenuButton.innerHTML = '<i class="ri-close-line ri-xl"></i>';
+        } else {
+          mobileMenu.classList.add('hidden');
+          mobileMenuButton.innerHTML = '<i class="ri-menu-line ri-xl"></i>';
+        }
+      });
+    });
+  </script>
+  <script id="filter-sort-script">
+    document.addEventListener('DOMContentLoaded', function () {
+      const sortButton = document.getElementById('sort-button');
+      const sortDropdown = document.getElementById('sort-dropdown');
+      const filterButton = document.getElementById('filter-button');
+      const filterPanel = document.getElementById('filter-panel');
+      sortButton.addEventListener('click', function () {
+        sortDropdown.classList.toggle('hidden');
+      });
+      filterButton.addEventListener('click', function () {
+        filterPanel.classList.toggle('hidden');
+      });
+      // Close dropdowns when clicking outside
+      document.addEventListener('click', function (event) {
+        if (!sortButton.contains(event.target) && !sortDropdown.contains(event.target)) {
+          sortDropdown.classList.add('hidden');
+        }
+        if (!filterButton.contains(event.target) && !filterPanel.contains(event.target) && !event.target.closest('#filter-panel')) {
+          // Don't close filter panel when clicking inside it
+          if (!filterPanel.contains(event.target)) {
+            // filterPanel.classList.add('hidden');
+          }
+        }
+      });
+      // Price range slider
+      const priceRange = document.getElementById('price-range');
+      const priceValue = document.getElementById('price-value');
+      if (priceRange && priceValue) {
+        priceRange.addEventListener('input', function () {
+          priceValue.textContent = '$' + this.value;
+        });
+      }
+    });
+  </script>
+  <script id="checkout-script">
+    document.addEventListener('DOMContentLoaded', function () {
+      const cartButtons = document.querySelectorAll('.ri-shopping-bag-line');
+      const checkoutModal = document.getElementById('checkout-modal');
+      const closeCheckout = document.getElementById('close-checkout');
+      cartButtons.forEach(button => {
+        button.addEventListener('click', function () {
+          checkoutModal.classList.remove('hidden');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+      closeCheckout.addEventListener('click', function () {
+        checkoutModal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+      });
+      // Close modal when clicking outside
+      checkoutModal.addEventListener('click', function (event) {
+        if (event.target === checkoutModal) {
+          checkoutModal.classList.add('hidden');
+          document.body.style.overflow = 'auto';
+        }
+      });
+    });
+  </script>
+  <script id="toast-script">
+    function showToast(product) {
+      const toastContainer = document.querySelector('.toast-container');
+
+      const toast = document.createElement('div');
+      toast.className = 'toast bg-white shadow-lg rounded-lg p-4 mb-4 flex items-start w-80';
+
+      toast.innerHTML = `
+    <div class="flex-shrink-0 mr-4">
+      <img src="${product.image}" alt="${product.name}" class="w-16 h-16 object-cover object-top rounded">
+    </div>
+    <div class="flex-grow">
+      <div class="flex items-start justify-between mb-2">
+        <h4 class="font-medium">${product.name}</h4>
+        <button class="text-gray-400 hover:text-gray-600 close-toast">
+          <i class="ri-close-line"></i>
+        </button>
+      </div>
+      <p class="text-gray-500 text-sm mb-2">Added to cart</p>
+      <p class="font-medium mb-3">${product.price}</p>
+      <div class="flex space-x-2">
+        <button class="bg-primary text-white px-3 py-1 rounded-button text-sm hover:bg-blue-600 transition-colors view-cart">View Cart</button>
+        <button class="bg-gray-100 text-gray-700 px-3 py-1 rounded-button text-sm hover:bg-gray-200 transition-colors continue-shopping">Continue</button>
+      </div>
+    </div>
+  `;
+      toastContainer.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.add('show');
+      }, 100);
+      const closeBtn = toast.querySelector('.close-toast');
+      const viewCartBtn = toast.querySelector('.view-cart');
+      const continueBtn = toast.querySelector('.continue-shopping');
+
+      closeBtn.addEventListener('click', () => removeToast(toast));
+      viewCartBtn.addEventListener('click', () => {
+        document.getElementById('checkout-modal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        removeToast(toast);
+      });
+      continueBtn.addEventListener('click', () => removeToast(toast));
+      setTimeout(() => removeToast(toast), 5000);
+    }
+    function removeToast(toast) {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 300);
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+      const addToCartButtons = document.querySelectorAll('.product-card .quick-add button');
+
+      addToCartButtons.forEach(button => {
+        button.addEventListener('click', function (e) {
+          const productCard = e.target.closest('.product-card');
+          const product = {
+            name: productCard.querySelector('h3').textContent,
+            price: productCard.querySelector('.font-medium').textContent,
+            image: productCard.querySelector('img').src
+          };
+          showToast(product);
+        });
+      });
+    });
+  </script>
+  <script id="back-to-top-script">
+    document.addEventListener('DOMContentLoaded', function () {
+      const backToTopButton = document.getElementById('back-to-top');
+      window.addEventListener('scroll', function () {
+        if (window.pageYOffset > 300) {
+          backToTopButton.classList.add('visible');
+        } else {
+          backToTopButton.classList.remove('visible');
+        }
+      });
+      backToTopButton.addEventListener('click', function () {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

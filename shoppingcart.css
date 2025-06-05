@@ -1,0 +1,115 @@
+body{
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    /* background-color: rgb(63, 58, 58); */
+    /* background-image: url(./backgroung.png); */
+    background: linear-gradient(
+      45deg,
+      rgba(78, 226, 157, 0.76),
+      rgba(201, 113, 219, 0.6) 100%
+    );
+    box-shadow: 5px;
+    /* color: green; */
+
+}
+
+
+h2 {
+    font-size: 2em;
+    text-align: center;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 40px;
+    box-shadow: rgb(230, 168, 230);
+    /* background-color: rgba(65, 105, 101, 0.507); */
+    color: white;
+  
+  }
+
+  h3 {
+    font-size: 2em;
+    text-align: center;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 40px;
+    box-shadow: rgb(230, 168, 230);
+    /* background-color: rgba(65, 105, 101, 0.507); */
+    color: white;
+  
+  }
+
+  ul {
+    list-style: 7px;
+    margin: 10px;
+    padding: 5px;
+    /* display: flex; */
+  }
+  .shopping-cart>ul>li cart-item-image alt{
+    color: white;
+  }
+
+  li{
+    margin-right: 50px;
+}
+
+h3 {
+    font-size: 2em;
+    text-align: center;
+    padding: 5px;
+    margin: 10px;
+    /* button {
+        color: rgb(117, 145, 129);
+        background-color: transparent;
+        border: none;
+        border-radius: 10px;
+        padding: 20px;
+        cursor: pointer;
+    } */
+    
+    /* background-color: rgba(65, 105, 101, 0.507); */
+    color: white;
+    box-shadow: rgb(230, 168, 230);
+  }
+
+  /* button {
+    color: rgb(117, 145, 129);
+    background-color: transparent;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+} */
+
+button{
+    border-radius: 1px;
+    margin: 10px;
+    padding: 10px;
+    background-color: transparent;
+    color: white;
+}
+button:hover{
+  box-shadow: 0px 5px 5px rgba(223, 220, 11, 0.336);
+}
+button a{
+  color: white;
+  text-decoration: none;
+  list-style: none;
+}
+
+/* button:hover a {
+    color: black;   
+} */
+
+p{
+    color:   white;
+}
+footer{
+  padding-top: 5vh;
+  height: 10vh;
+  background-color: black;
+}
+footer>p{
+  justify-content: center;
+  align-items: center;
+  padding-left: 70vh;
+}
