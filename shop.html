@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxurious Smartwatch - SHOPLYFT</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            overflow-x: hidden; /* Prevent horizontal scrollbar during transition */
+            transition: margin-right 0.3s ease-in-out; /* Smooth transition for content push */
+            margin-right: 0; /* Initial state, no push */
+            border-radius: 8px; /* Apply rounded corners to elements */
+        }
+
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-radius: 0 0 8px 8px; /* Rounded bottom corners for navbar */
+            padding: 1rem 0;
+        }
+        .navbar-brand img {
+            border-radius: 50%; /* Circular logo */
+        }
+
+        /* Main content push effect */
+        body.sidebar-open {
+            margin-right: 320px; /* Push main content when sidebar is open (sidebar width + padding) */
+        }
+
+        /* Sidebar Trigger Button */
+        #sidebar-trigger {
+            position: fixed;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            background-color: #007bff; /* Primary blue */
+            color: white;
+            border: none;
+            padding: 12px 15px;
+            border-radius: 8px 0 0 8px; /* Rounded left corners */
+            cursor: pointer;
+            z-index: 1000; /* Ensure it's above other content */
+            box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s ease;
+        }
+        #sidebar-trigger:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        /* Sidebar Styling */
+        #sidebar {
+            position: fixed;
+            top: 0;
+            right: -320px; /* Initially off-screen to the right (width + padding) */
+            width: 300px;
+            height: 100%;
+            background-color: #ffffff;
+            box-shadow: -8px 0 20px rgba(0, 0, 0, 0.15);
+            padding: 20px;
+            overflow-y: auto; /* Enable scrolling for many items */
+            transition: right 0.3s ease-in-out; /* Smooth slide transition */
+            z-index: 1050; /* Ensure it's above everything */
+            border-radius: 8px 0 0 8px; /* Rounded left corners */
+        }
+
+        body.sidebar-open #sidebar {
+            right: 0; /* Slide sidebar into view */
+        }
+
+        .close-sidebar {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #6c757d;
+            border-radius: 50%; /* Make button circular */
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s ease, background-color 0.2s ease;
+        }
+        .close-sidebar:hover {
+            color: #343a40;
+            background-color: #f0f0f0;
+        }
+
+        .sidebar-title {
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e9ecef;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        /* Sidebar Category Styling */
+        .sidebar-category {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #e9ecef;
+            transition: background-color 0.2s ease;
+            cursor: pointer;
+            border-radius: 8px;
+            margin: 0 -10px; /* Adjust for internal padding */
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        .sidebar-category:hover {
+            background-color: #f8f9fa;
+        }
+        .sidebar-category:last-child {
+            border-bottom: none;
+        }
+        .sidebar-category img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+        }
+        .sidebar-category-details {
+            flex-grow: 1;
+        }
+        .sidebar-category-details h6 {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+            color: #212529;
+        }
+        .sidebar-category-details .text-muted {
+            font-size: 0.9rem;
+        }
+
+        /* Main Product Page Styling */
+        .product-section {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+            padding: 40px;
+            margin-top: 30px;
+            margin-bottom: 50px;
+        }
+        .product-image-main {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .product-title-main {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 15px;
+        }
+        .product-price-main {
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: #007bff; /* Primary blue for main price */
+            margin-bottom: 25px;
+        }
+        .product-description-main {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #5a6268;
+            margin-bottom: 30px;
+        }
+        .btn-add-to-cart {
+            background-color: #28a745; /* Green for add to cart */
+            border-color: #28a745;
+            padding: 15px 35px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .btn-add-to-cart:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+        .btn-wishlist {
+            background-color: #6c757d; /* Gray for wishlist */
+            border-color: #6c757d;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .btn-wishlist:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        /* Related Products Section Styling */
+        .category-products-section {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid #e9ecef;
+        }
+        .category-products-section h3 {
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .product-card {
+            background-color: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 25px; /* Spacing between cards */
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        .product-card img {
+            max-width: 100%;
+            height: 180px; /* Fixed height for consistent card size */
+            object-fit: contain; /* Ensure entire image is visible */
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .product-card h5 {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #212529;
+        }
+        .product-card .price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #007bff;
+            margin-bottom: 15px;
+        }
+        .product-card .btn {
+            width: 100%;
+            border-radius: 6px;
+        }
+
+        /* Footer styling */
+        .footer {
+            background-color: #343a40;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            border-radius: 8px 8px 0 0; /* Rounded top corners for footer */
+        }
+        .footer .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+        .footer .social-icons a:hover {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="https://placehold.co/40x40/007bff/ffffff?text=SL" alt="SHOPLYFT Logo" class="me-2">
+                <span class="fw-bold fs-4 text-primary">SHOPLYFT</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./shop.html">Shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./aboutus.html">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./contactform.html">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./shoppingcart.html"><i class="fas fa-shopping-cart"></i> Cart</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar Trigger Button -->
+    <button id="sidebar-trigger" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i> Explore Categories
+    </button>
+
+    <!-- Side Overflow Push-out Sidebar -->
+    <div id="sidebar">
+        <button class="close-sidebar" onclick="toggleSidebar()">
+            <i class="fas fa-times"></i>
+        </button>
+        <h4 class="sidebar-title">Shop by Category</h4>
+        
+        <!-- Category Items - Clicking these will update the main product section -->
+        <a href="#" class="sidebar-category" onclick="displayProductsByCategory('Electronics'); return false;">
+            <img src="https://placehold.co/70x70/007bff/ffffff?text=E" alt="Electronics Category">
+            <div class="sidebar-category-details">
+                <h6>Electronics</h6>
+                <p class="text-muted mb-0">Laptops, Phones, Gadgets & More</p>
+            </div>
+        </a>
+        <a href="#" class="sidebar-category" onclick="displayProductsByCategory('Fashion & Apparel'); return false;">
+            <img src="https://placehold.co/70x70/28a745/ffffff?text=F" alt="Fashion Category">
+            <div class="sidebar-category-details">
+                <h6>Fashion & Apparel</h6>
+                <p class="text-muted mb-0">Trendy Clothes, Shoes & Accessories</p>
+            </div>
+        </a>
+        <a href="#" class="sidebar-category" onclick="displayProductsByCategory('Home & Kitchen'); return false;">
+            <img src="https://placehold.co/70x70/ffc107/000000?text=H" alt="Home & Kitchen Category">
+            <div class="sidebar-category-details">
+                <h6>Home & Kitchen</h6>
+                <p class="text-muted mb-0">Decor, Appliances & Cookware</p>
+            </div>
+        </a>
+        <a href="#" class="sidebar-category" onclick="displayProductsByCategory('Beauty & Health'); return false;">
+            <img src="https://placehold.co/70x70/dc3545/ffffff?text=B" alt="Beauty & Health Category">
+            <div class="sidebar-category-details">
+                <h6>Beauty & Health</h6>
+                <p class="text-muted mb-0">Skincare, Makeup & Wellness</p>
+            </div>
+        </a>
+        <a href="#" class="sidebar-category" onclick="displayProductsByCategory('Sports & Outdoors'); return false;">
+            <img src="https://placehold.co/70x70/17a2b8/ffffff?text=S" alt="Sports & Outdoors Category">
+            <div class="sidebar-category-details">
+                <h6>Sports & Outdoors</h6>
+                <p class="text-muted mb-0">Gear, Equipment & Adventure</p>
+            </div>
+        </a>
+        <a href="#" class="sidebar-category" onclick="displayProductsByCategory('Books & Media'); return false;">
+            <img src="https://placehold.co/70x70/6610f2/ffffff?text=K" alt="Books & Media Category">
+            <div class="sidebar-category-details">
+                <h6>Books & Media</h6>
+                <p class="text-muted mb-0">Novels, Movies, Music & Games</p>
+            </div>
+        </a>
+        <a href="#" class="sidebar-category" onclick="displayProductsByCategory('Office Supplies'); return false;">
+            <img src="https://placehold.co/70x70/4CAF50/ffffff?text=O" alt="Office Supplies Category">
+            <div class="sidebar-category-details">
+                <h6>Office Supplies</h6>
+                <p class="text-muted mb-0">Stationery, Furniture & Equipment</p>
+            </div>
+        </a>
+        <a href="#" class="sidebar-category" onclick="displayProductsByCategory('All Products'); return false;">
+            <img src="https://placehold.co/70x70/6c757d/ffffff?text=All" alt="All Products Category">
+            <div class="sidebar-category-details">
+                <h6>All Products</h6>
+                <p class="text-muted mb-0">View all items available on SHOPLYFT</p>
+            </div>
+        </a>
+    </div>
+
+    <!-- Main Product Content Section -->
+    <main class="container product-section" style="   background: linear-gradient(
+        45deg,
+        rgba(78, 226, 157, 0.76),
+        rgba(201, 113, 219, 0.6) 100%
+      );">
+        <div class="row">
+            <!-- Product Image Column -->
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <img src="https://placehold.co/800x600/007bff/ffffff?text=Smartwatch+Pro+Series" alt="Luxurious Smartwatch Pro Series" class="product-image-main img-fluid">
+            </div>
+            <!-- Product Details Column -->
+            <div class="col-lg-6">
+                <h1 class="product-title-main">SHOPLYFT Smartwatch Pro Series</h1>
+                <p class="product-price-main">₦ 120,000</p>
+                
+                <p class="product-description-main">
+                    Experience the future on your wrist with the SHOPLYFT Smartwatch Pro Series. Crafted with premium materials and cutting-edge technology, this smartwatch seamlessly integrates into your daily life. Monitor your fitness, receive notifications, make calls, and track your health with unparalleled precision.
+                </p>
+                <p class="product-description-main">
+                    Featuring a vibrant AMOLED display, long-lasting battery, and water resistance, it's designed for the dynamic lifestyle of Port Harcourt. Stay connected, stay active, and stay stylish with SHOPLYFT.
+                </p>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-start">
+                    <button class="btn btn-add-to-cart">
+                        <i class="fas fa-shopping-cart me-2"></i> Add to Cart
+                    </button>
+                    <button class="btn btn-wishlist ms-md-2">
+                        <i class="far fa-heart me-2"></i> Add to Wishlist
+                    </button>
+                </div>
+
+                <hr class="my-4">
+
+                <div class="product-features">
+                    <h5>Key Features:</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check-circle text-success me-2"></i> Vibrant AMOLED Display</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i> Advanced Health Monitoring (Heart Rate, SpO2)</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i> IP68 Water & Dust Resistance</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i> 7-Day Battery Life (typical usage)</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i> Seamless Bluetooth Connectivity</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dynamic Category Products Section -->
+        <section class="category-products-section">
+            <h3 id="category-products-title"></h3>
+            <div id="category-products-display" class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+                <!-- Product cards will be dynamically loaded here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 SHOPLYFT. All rights reserved.</p>
+            <div class="social-icons mt-3">
+                <a href="#" class="me-3"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="me-3"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="me-3"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+            <p class="mt-3">123 E-commerce Street, Port Harcourt, Rivers, Nigeria</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        /**
+         * Toggles the visibility of the sidebar and pushes the main content.
+         * Adds/removes the 'sidebar-open' class from the body element.
+         */
+        function toggleSidebar() {
+            document.body.classList.toggle('sidebar-open');
+        }
+
+        /**
+         * Product data structure.
+         * Each product includes a 'category' property to enable filtering.
+         * Using placeholder.co for dynamic image generation.
+         */
+        const allProducts = [
+            // Electronics
+            { name: "Premium Noise-Cancelling Headphones", price: "65,000", image: "https://placehold.co/250x180/ADD8E6/000000?text=Noise-Cancelling+Headphones", category: "Electronics" },
+            { name: "True Wireless Earbuds", price: "38,500", image: "https://placehold.co/250x180/FFD700/000000?text=Wireless+Earbuds", category: "Electronics" },
+            { name: "Portable Bluetooth Speaker", price: "22,000", image: "https://placehold.co/250x180/90EE90/000000?text=Portable+Bluetooth+Speaker", category: "Electronics" },
+            { name: "Smart Home Hub", price: "49,999", image: "https://placehold.co/250x180/B0E0E6/000000?text=Smart+Home+Hub", category: "Electronics" },
+            { name: "Mirrorless Digital Camera", price: "450,000", image: "https://placehold.co/250x180/FFB6C1/000000?text=Digital+Camera", category: "Electronics" },
+            { name: "Mechanical Gaming Keyboard", price: "75,000", image: "https://placehold.co/250x180/F0F8FF/000000?text=Gaming+Keyboard", category: "Electronics" },
+            { name: "Advanced Fitness Tracker", price: "29,999", image: "https://placehold.co/250x180/FFE4B5/000000?text=Fitness+Tracker", category: "Electronics" },
+            { name: "Ultra-Thin Laptop XPS", price: "1,200,000", image: "https://placehold.co/250x180/ADD8E6/000000?text=Laptop", category: "Electronics" },
+
+            // Fashion & Apparel
+            { name: "Men's Slim Fit Jeans", price: "18,000", image: "https://placehold.co/250x180/c2e0b5/000000?text=Jeans", category: "Fashion & Apparel" },
+            { name: "Women's Summer Dress", price: "25,000", image: "https://placehold.co/250x180/f8b4cb/000000?text=Dress", category: "Fashion & Apparel" },
+            { name: "Leather Casual Shoes", price: "42,000", image: "https://placehold.co/250x180/d3d3d3/000000?text=Shoes", category: "Fashion & Apparel" },
+            { name: "Designer Sunglasses", price: "30,000", image: "https://placehold.co/250x180/ffe59e/000000?text=Sunglasses", category: "Fashion & Apparel" },
+
+            // Home & Kitchen
+            { name: "Smart Coffee Maker", price: "55,000", image: "https://placehold.co/250x180/a9def9/000000?text=Coffee+Maker", category: "Home & Kitchen" },
+            { name: "Robotic Vacuum Cleaner", price: "180,000", image: "https://placehold.co/250x180/c8f2c8/000000?text=Vacuum", category: "Home & Kitchen" },
+            { name: "12-Piece Non-Stick Cookware Set", price: "70,000", image: "https://placehold.co/250x180/ffdd99/000000?text=Cookware", category: "Home & Kitchen" },
+            { name: "High-Speed Blender", price: "35,000", image: "https://placehold.co/250x180/f7cac9/000000?text=Blender", category: "Home & Kitchen" },
+
+            // Beauty & Health
+            { name: "Advanced Hydrating Face Serum", price: "15,000", image: "https://placehold.co/250x180/f0e68c/000000?text=Serum", category: "Beauty & Health" },
+            { name: "Sonic Electric Toothbrush", price: "28,000", image: "https://placehold.co/250x180/afeeee/000000?text=Toothbrush", category: "Beauty & Health" },
+            { name: "Essential Oil Diffuser", price: "10,500", image: "https://placehold.co/250x180/e6e6fa/000000?text=Diffuser", category: "Beauty & Health" },
+            { name: "Daily Multivitamin Blend", price: "7,500", image: "https://placehold.co/250x180/d8bfd8/000000?text=Vitamins", category: "Beauty & Health" },
+
+            // Sports & Outdoors
+            { name: "Premium Non-Slip Yoga Mat", price: "12,000", image: "https://placehold.co/250x180/d4edda/000000?text=Yoga+Mat", category: "Sports & Outdoors" },
+            { name: "Lightweight 2-Person Camping Tent", price: "60,000", image: "https://placehold.co/250x180/a0d9e4/000000?text=Tent", category: "Sports & Outdoors" },
+            { name: "Professional Running Shoes", price: "48,000", image: "https://placehold.co/250x180/ffdab9/000000?text=Running+Shoes", category: "Sports & Outdoors" },
+            { name: "Insulated Stainless Steel Water Bottle", price: "8,500", image: "https://placehold.co/250x180/bbd3ff/000000?text=Water+Bottle", category: "Sports & Outdoors" },
+
+            // Books & Media
+            { name: "The Alchemist by Paulo Coelho", price: "4,500", image: "https://placehold.co/250x180/b0e0e6/000000?text=Novel", category: "Books & Media" },
+            { name: "Atomic Habits by James Clear", price: "6,000", image: "https://placehold.co/250x180/c7d3d4/000000?text=Self-Help", category: "Books & Media" },
+            { name: "Vintage Vinyl Record Player", price: "110,000", image: "https://placehold.co/250x180/e0b0ff/000000?text=Vinyl+Player", category: "Books & Media" },
+            { name: "Lord of the Rings Box Set", price: "35,000", image: "https://placehold.co/250x180/a2d2ff/000000?text=LOTR", category: "Books & Media" },
+
+            // Office Supplies
+            { name: "Ergonomic Office Chair", price: "95,000", image: "https://placehold.co/250x180/D3D3D3/000000?text=Ergonomic+Chair", category: "Office Supplies" },
+            { name: "Wireless Keyboard & Mouse Combo", price: "28,000", image: "https://placehold.co/250x180/cceebb/000000?text=Keyboard+Mouse", category: "Office Supplies" },
+            { name: "Premium Gel Pen Set (12-pack)", price: "5,500", image: "https://placehold.co/250x180/f7a0a0/000000?text=Gel+Pens", category: "Office Supplies" },
+            { name: "Heavy Duty Paper Shredder", price: "40,000", image: "https://placehold.co/250x180/aaccff/000000?text=Shredder", category: "Office Supplies" },
+        ];
+
+        /**
+         * Dynamically displays products based on the selected category.
+         * @param {string} categoryName - The name of the category to display products from.
+         */
+        function displayProductsByCategory(categoryName) {
+            const productsDisplay = document.getElementById('category-products-display');
+            const categoryTitle = document.getElementById('category-products-title');
+            productsDisplay.innerHTML = ''; // Clear previous products
+
+            let productsToDisplay = [];
+            if (categoryName === 'All Products') {
+                productsToDisplay = allProducts;
+                categoryTitle.textContent = 'All Products Available';
+            } else {
+                productsToDisplay = allProducts.filter(product => product.category === categoryName);
+                categoryTitle.textContent = `Products in ${categoryName}`;
+            }
+
+            if (productsToDisplay.length === 0) {
+                productsDisplay.innerHTML = '<p class="text-center text-muted col-12">No products found in this category.</p>';
+                return;
+            }
+
+            productsToDisplay.forEach(product => {
+                const productCardHtml = `
+                    <div class="col">
+                        <div class="product-card">
+                            <img src="${product.image}" alt="${product.name}">
+                            <h5>${product.name}</h5>
+                            <p class="price">₦ ${product.price}</p>
+                            <a href="#" class="btn btn-primary">View Product</a>
+                        </div>
+                    </div>
+                `;
+                productsDisplay.innerHTML += productCardHtml;
+            });
+
+            // Close sidebar after selection
+            toggleSidebar();
+        }
+
+        // Initialize with 'All Products' when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            displayProductsByCategory('All Products');
+        });
+    </script>
+</body>
+</html>

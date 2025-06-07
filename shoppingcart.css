@@ -107,9 +107,10 @@ footer{
   padding-top: 5vh;
   height: 10vh;
   background-color: black;
+  text-align: center;
 }
-footer>p{
+/* footer>p{
   justify-content: center;
   align-items: center;
   padding-left: 70vh;
-}
+} */

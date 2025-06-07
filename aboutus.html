@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - SHOPLYFT</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-radius: 0 0 8px 8px;
+            padding: 1rem 0;
+        }
+        .navbar-brand img {
+            border-radius: 50%;
+        }
+
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://placehold.co/1600x600/007bff/ffffff?text=Our+Story') no-repeat center center/cover;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            border-radius: 12px;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .hero-section h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+        }
+        .hero-section p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+        }
+
+        .section-padding {
+            padding: 80px 0;
+        }
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            width: 80px;
+            height: 4px;
+            background-color: #007bff;
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .about-content-block {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+        .about-content-block h4 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+        .about-content-block p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #5a6268;
+        }
+
+        .values-section .col {
+            padding: 20px;
+        }
+        .value-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            height: 100%; /* Ensure cards are same height */
+        }
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        .value-card .icon {
+            font-size: 3.5rem;
+            color: #28a745; /* Green */
+            margin-bottom: 20px;
+        }
+        .value-card h5 {
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        .value-card p {
+            color: #6c757d;
+            line-height: 1.6;
+        }
+
+        .team-section {
+            background-color: #e9ecef;
+            border-radius: 12px;
+            padding: 60px 0;
+        }
+        .team-member-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+            text-align: center;
+            height: 100%;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .team-member-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+        .team-member-card img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            border: 4px solid #007bff;
+        }
+        .team-member-card h5 {
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 5px;
+            font-size: 1.4rem;
+        }
+        .team-member-card p.text-muted {
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+        .team-member-card .social-icons a {
+            color: #007bff;
+            font-size: 1.2rem;
+            margin: 0 8px;
+            transition: color 0.2s ease;
+        }
+        .team-member-card .social-icons a:hover {
+            color: #0056b3;
+        }
+
+        /* Footer styling */
+        .footer {
+            background-color: #343a40;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        .footer .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+        .footer .social-icons a:hover {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="https://placehold.co/40x40/007bff/ffffff?text=SL" alt="SHOPLYFT Logo" class="me-2">
+                <span class="fw-bold fs-4 text-primary">SHOPLYFT</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> Cart</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section for About Us -->
+    <header class="hero-section container-fluid">
+        <div class="container">
+            <h1>Our Story at SHOPLYFT</h1>
+            <p>From humble beginnings to becoming your trusted online shopping destination in Nigeria, discover the journey of SHOPLYFT.</p>
+        </div>
+    </header>
+
+    <!-- Our Mission Section -->
+    <section class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Our Mission</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="about-content-block text-center">
+                        <h4>Empowering Your Shopping Experience</h4>
+                        <p>At SHOPLYFT, our mission is to redefine online shopping in Nigeria by providing an unparalleled selection of quality products, competitive prices, and exceptional customer service. We strive to create a seamless, secure, and enjoyable shopping journey for every customer, ensuring that you find exactly what you need with ease and confidence.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Values Section -->
+    <section class="section-padding bg-light">
+        <div class="container">
+            <h2 class="section-title">Our Core Values</h2>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                <div class="col">
+                    <div class="value-card">
+                        <div class="icon"><i class="fas fa-handshake"></i></div>
+                        <h5>Customer Centricity</h5>
+                        <p>Our customers are at the heart of everything we do. We are committed to listening, understanding, and exceeding your expectations with every interaction.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="value-card">
+                        <div class="icon"><i class="fas fa-lightbulb"></i></div>
+                        <h5>Innovation</h5>
+                        <p>We continuously explore new technologies and approaches to enhance our platform, offering you the latest features and a cutting-edge shopping environment.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="value-card">
+                        <div class="icon"><i class="fas fa-shield-alt"></i></div>
+                        <h5>Trust & Transparency</h5>
+                        <p>Building lasting relationships based on trust is paramount. We operate with integrity, honesty, and full transparency in all our dealings.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="value-card">
+                        <div class="icon"><i class="fas fa-tags"></i></div>
+                        <h5>Quality & Value</h5>
+                        <p>We curate our product range to ensure high quality and offer competitive pricing, providing you with the best value for your money.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="icon"><i class="fas fa-users-cog"></i></div>
+                        <h5>Teamwork & Growth</h5>
+                        <p>We foster a collaborative environment where our team members are empowered to grow, innovate, and contribute to our shared success.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="value-card">
+                        <div class="icon"><i class="fas fa-leaf"></i></div>
+                        <h5>Community Impact</h5>
+                        <p>We believe in giving back and positively impacting the communities we serve, contributing to sustainable development in Nigeria.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Team Section -->
+    <section class="section-padding team-section">
+        <div class="container">
+            <h2 class="section-title">Meet Our Team</h2>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 justify-content-center">
+                <!-- Team Member 1 -->
+                <div class="col">
+                    <div class="team-member-card">
+                        <img src="https://placehold.co/150x150/007bff/ffffff?text=CEO" alt="John Doe, CEO">
+                        <h5>John Doe</h5>
+                        <p class="text-muted">CEO & Founder</p>
+                        <p>Visionary leader steering SHOPLYFT towards new horizons and customer satisfaction.</p>
+                        <div class="social-icons">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter-square"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Team Member 2 -->
+                <div class="col">
+                    <div class="team-member-card">
+                        <img src="https://placehold.co/150x150/28a745/ffffff?text=CTO" alt="Jane Smith, CTO">
+                        <h5>Jane Smith</h5>
+                        <p class="text-muted">Chief Technology Officer</p>
+                        <p>Driving innovation and ensuring a robust, secure, and user-friendly platform experience.</p>
+                        <div class="social-icons">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter-square"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Team Member 3 -->
+                <div class="col">
+                    <div class="team-member-card">
+                        <img src="https://placehold.co/150x150/ffc107/000000?text=CMO" alt="David Mark, CMO">
+                        <h5>David Mark</h5>
+                        <p class="text-muted">Chief Marketing Officer</p>
+                        <p>Crafting engaging campaigns that connect SHOPLYFT with customers across Nigeria.</p>
+                        <div class="social-icons">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter-square"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Team Member 4 -->
+                <div class="col">
+                    <div class="team-member-card">
+                        <img src="https://placehold.co/150x150/dc3545/ffffff?text=COO" alt="Sarah Obi, COO">
+                        <h5>Sarah Obi</h5>
+                        <p class="text-muted">Chief Operating Officer</p>
+                        <p>Ensuring smooth operations and efficient delivery, from warehouse to your doorstep.</p>
+                        <div class="social-icons">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter-square"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action / Contact Us Section -->
+    <section class="section-padding text-center">
+        <div class="container">
+            <h2 class="section-title">Have Questions? We're Here to Help!</h2>
+            <p class="lead mb-5">Whether it's feedback, support, or partnership inquiries, feel free to reach out to the SHOPLYFT team. Your voice matters!</p>
+            <a href="#" class="btn btn-primary btn-lg"><i class="fas fa-envelope me-2"></i> Contact Our Team</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 SHOPLYFT. All rights reserved.</p>
+            <div class="social-icons mt-3">
+                <a href="#" class="me-3"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="me-3"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="me-3"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+            <p class="mt-3">123 E-commerce Street, Port Harcourt, Rivers, Nigeria</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
